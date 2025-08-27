@@ -163,8 +163,7 @@ Motorista — Representa os motoristas responsáveis pelos veículos e pedidos d
 | nome            | texto                         | sim         | "Ana Souza"        |
 | email           | texto                         | sim (único) | "ana@exemplo.com"  |
 | senha_hash      | texto                         | sim         | "$2a$10$..."       |
-| papel           | número (1=despachante         |             |                    |
-                  |   , 2=motorista, 3 = gerente) | sim         | 1                  |
+| papel           | número                        | sim         | 1                  |
 | dataCriacao     | data/hora                     | sim         | 2025-08-20 14:30   |
 | dataAtualizacao | data/hora                     | sim         | 2025-08-20 15:10   |
 
@@ -189,9 +188,7 @@ Motorista — Representa os motoristas responsáveis pelos veículos e pedidos d
 | Placa           | texto              | sim         | "ABC-1234"              |
 | Modelo          | texto              | sim         | "Volvo FH"              |
 | Capacidade      | numero(ton)        | sim         | 20                      |
-| status          | texto(disponível,
-                    em trânsito,
-                    manutenção)        | sim         | "Disponivel"            |
+| status          | texto              | sim         | "Disponivel"            |
 | dataCriacao     | data/hora          | sim         | 2025-08-20 14:30        |
 | dataAtualizacao | data/hora          | sim         | 2025-08-20 15:10        |
 
