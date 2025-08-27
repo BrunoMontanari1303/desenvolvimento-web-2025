@@ -1,47 +1,45 @@
-# [Título do seu projeto]
-<!-- EXEMPLO: "AtendeAí — Fila de Ajuda em Sala" -->
+TMS — Sistema de Gerenciamento de Transporte
 
 ## 1) Problema
-<!-- Escreva o problema sem falar de telas/tecnologias.
-     Responda: Quem sofre? Onde? O que atrapalha? Por que isso importa?
-     EXEMPLO: Em aulas práticas, alunos esperam muito para serem atendidos.
-     Há filas confusas e frustração. O professor não vê ordem nem tempo de espera.
-     Objetivo inicial: organizar a fila para reduzir a espera e garantir justiça. -->
-[Quem], em [contexto], tem dificuldade em [tarefa/dor].
-Isso causa [efeito mensurável].
-No início, o foco será [público principal] com o objetivo de [resultado simples].
+
+Despachantes e coordenadores de logística, em empresas de transporte e distribuição, têm dificuldade em gerenciar e rastrear pedidos de transporte e otimizar o uso dos veículos. Isso causa atrasos nas entregas, aumento de custos operacionais e falta de visibilidade das rotas. No início, o foco será despachantes e motoristas, com o objetivo de otimizar o gerenciamento de pedidos e garantir rastreamento simples de entregas.
 
 ## 2) Atores e Decisores (quem usa / quem decide)
-<!-- Liste papéis (não nomes).
-     EXEMPLO:
-     Usuários principais: Alunos da turma de Desenvolvimento Web
-     Decisores/Apoiadores: Professores da disciplina; Coordenação do curso -->
-Usuários principais: [lista]
-Decisores/Apoiadores: [lista]
+
+Usuários principais: Despachantes/Coordenadores de Logística; Motoristas; Gerentes de Transporte
+Decisores/Apoiadores: Diretores de Logística; Gestores de TI; Equipe de Suporte
 
 ## 3) Casos de uso (de forma simples)
-<!-- Formato "Ator: ações que pode fazer".
-     DICA: Use "Manter (inserir, mostrar, editar, remover)" quando for CRUD.
-     EXEMPLO:
-     Todos: Logar/deslogar do sistema; Manter dados cadastrais
-     Professor: Manter (inserir, mostrar, editar, remover) todos os chamados
-     Aluno: Manter (inserir, mostrar, editar, remover) seus chamados -->
-Todos: [ações comuns, ex.: Logar/deslogar; Manter dados cadastrais]  
-[Ator 1]: [ações do ator 1]  
-[Ator 2]: [ações do ator 2]
+
+Todos: Logar/deslogar do sistema.
+Manter dados cadastrais (alterar e atualizar informações pessoais e de contato).
+
+Despachante/Coordenador de Logística: Manter (criar, visualizar, editar, remover) pedidos de transporte.
+Atribuir (veículos e motoristas) a pedidos de transporte.
+Consultar relatórios de status e desempenho de entregas.
+
+Motorista: Manter (visualizar, atualizar) status dos pedidos de transporte (em andamento, concluído, atrasado).
+Consultar (seus pedidos e informações de rota).
+Atualizar o status da entrega (entregue, em atraso).
+
+Gerente de Transporte: Manter (visualizar, editar) relatórios de desempenho e estatísticas de transporte.
+Consultar e analisar dados de rotas e veículos (e.g., tempo de entrega, eficiência de uso de veículos).
 
 ## 4) Limites e suposições
-<!-- Simples assim:
-     - Limites = regras/prazos/obrigações que você não controla.
-     - Suposições = coisas que você espera ter e podem falhar.
-     - Plano B = como você segue com a 1ª fatia se algo falhar.
-     EXEMPLO:
-     Limites: entrega final até o fim da disciplina (ex.: 2025-11-30); rodar no navegador; sem serviços pagos.
-     Suposições: internet no laboratório; navegador atualizado; acesso ao GitHub; 10 min para teste rápido.
-     Plano B: sem internet → rodar local e salvar em arquivo/LocalStorage; sem tempo do professor → testar com 3 colegas. -->
-Limites: [prazo final], [regras/tecnologias obrigatórias], [restrições]  
-Suposições: [internet/navegador/GitHub/tempo de teste]  
-Plano B: [como continua entregando a 1ª fatia se algo falhar]
+
+Limites: Prazo final para entrega: 6 semanas para a primeira fatia vertical.
+O sistema deve funcionar no navegador (não será disponibilizado versão mobile inicial).
+O sistema não incluirá otimização automática de rotas na primeira versão.
+Utilização obrigatória de Node.js para backend e PostgreSQL para o banco de dados.
+
+Suposições: Os motoristas e despachantes terão acesso à internet estável para atualizar o status de entrega em tempo real.
+O navegador utilizado será atualizado e compatível com as versões mais recentes (Chrome, Firefox, Edge).
+O GitHub será usado para controle de versão e compartilhamento de código.
+Equipe de suporte disponível para testar o sistema e fornecer feedback durante a fase piloto.
+
+
+Plano B: Caso a internet não esteja disponível para atualizações em tempo real, o motorista poderá atualizar o status posteriormente, uma vez que a conexão for restabelecida, utilizando uma opção de atualização offline.
+Se o tempo de desenvolvimento for reduzido, a primeira fatia vertical será limitada à criação e visualização de pedidos com funcionalidades simples de atribuição de veículos e motoristas, sem a necessidade de relatórios ou otimizações avançadas.
 
 ## 5) Hipóteses + validação
 <!-- Preencha as duas frases abaixo. Simples e direto.
@@ -50,31 +48,24 @@ Plano B: [como continua entregando a 1ª fatia se algo falhar]
      EXEMPLO Viabilidade: Com app no navegador (HTML/CSS/JS + armazenamento local),
      criar e listar chamados responde em até 1 segundo na maioria das vezes (ex.: 9 de cada 10).
      Validação: medir no protótipo com 30 ações; meta: pelo menos 27 de 30 ações (9/10) em 1s ou menos. -->
-H-Valor: Se [X], então [Y] melhora em [critério].  
-Validação (valor): [teste rápido/observação]; alvo: [meta simples].
+H-Valor: Se despachantes e motoristas puderem visualizar e atualizar status de transporte, então a eficiência no controle das entregas melhora.
+Validação (valor): Teste com despachantes e motoristas; sucesso se a maioria conseguir atualizar e consultar status corretamente.
 
-H-Viabilidade: Com [tecnologia], [ação/tela] leva até [n] s.  
-Validação (viabilidade): [medição no protótipo]; meta: [n] s ou menos na maioria das vezes (ex.: 9/10).
+Com Node.js e PostgreSQL, a criação e visualização de pedidos de transporte leva até 2 segundos para a maioria das interações.
+Validação (viabilidade): Medição no protótipo; sucesso se o sistema responder em 2 segundos ou menos na maioria das interações (9 de cada 10).
 
 ## 6) Fluxo principal e primeira fatia
-<!-- Pense “Entrada → Processo → Saída”.
-     EXEMPLO de Fluxo:
-     1) Aluno faz login
-     2) Clica em "Pedir ajuda" e descreve a dúvida
-     3) Sistema salva e coloca na fila
-     4) Lista mostra ordem e tempo desde criação
-     5) Professor encerra o chamado
-     EXEMPLO de 1ª fatia:
-     Inclui login simples, criar chamado, listar em ordem.
-     Critérios de aceite (objetivos): criar → aparece na lista com horário; encerrar → some ou marca "fechado". -->
+
 **Fluxo principal (curto):**  
-1) [entrada do usuário] → 2) [processo] → 3) [salvar algo] → 4) [mostrar resultado]
+1) Despachante faz login → 2) Cria um pedido de transporte (origem, destino, tipo de carga) → 3) Sistema salva o pedido no banco de dados → 4) Lista de pedidos de transporte é exibida com status e dados.
 
 **Primeira fatia vertical (escopo mínimo):**  
-Inclui: [uma tela], [uma ação principal], [salvar], [mostrar algo]  
+Inclui: Tela de login, Criação de pedido de transporte, Salvar pedido no banco de dados, Mostrar lista de pedidos criados.
 Critérios de aceite:
-- [Condição 1 bem objetiva]
-- [Condição 2 bem objetiva]
+
+Pedido de transporte é salvo corretamente no sistema e aparece na lista.
+
+Usuário consegue visualizar todos os pedidos de transporte cadastrados.
 
 ## 7) Esboços de algumas telas (wireframes)
 <!-- Vale desenho no papel (foto), Figma, Excalidraw, etc. Não precisa ser bonito, precisa ser claro.
@@ -85,35 +76,82 @@ Critérios de aceite:
      • Painel do professor (atender/encerrar)
      EXEMPLO de imagem:
      ![Wireframe - Lista de chamados](img/wf-lista-chamados.png) -->
-[Links ou imagens dos seus rascunhos de telas aqui]
+1. Tela de Login
+
+A tela de login simples, onde o usuário insere suas credenciais para acessar o sistema.
+
+Campos:
+
+Email (campo de texto)
+
+Senha (campo de texto)
+
+Botão: Entrar
+
+2. Tela de Criação de Pedido de Transporte
+
+Tela para despachantes criarem um novo pedido de transporte.
+
+Campos:
+
+Origem (campo de texto)
+
+Destino (campo de texto)
+
+Tipo de Carga (dropdown ou campo de texto)
+
+Data de Entrega (campo de data)
+
+Botão: Criar Pedido
+
+3. Tela de Lista de Pedidos de Transporte
+
+A tela exibe todos os pedidos de transporte cadastrados.
+
+Colunas:
+
+ID do Pedido (número único)
+
+Origem
+
+Destino
+
+Status (em andamento, entregue, etc.)
+
+Data de Entrega
+
+Botão: Atualizar Status (para despachante)
 
 ## 8) Tecnologias
-<!-- Liste apenas o que você REALMENTE pretende usar agora. -->
+8.1 Navegador
 
-### 8.1 Navegador
-**Navegador:** [HTML/CSS/JS | React/Vue/Bootstrap/etc., se houver]  
-**Armazenamento local (se usar):** [LocalStorage/IndexedDB/—]  
-**Hospedagem:** [GitHub Pages/—]
+Navegador: HTML/CSS/JS | Vue.js (para o front-end interativo)
+Armazenamento local (se usar): LocalStorage (para armazenamento de sessões ou dados temporários)
+Hospedagem: Netlify ou Vercel (para deploy rápido da aplicação front-end)
 
-### 8.2 Front-end (servidor de aplicação, se existir)
-**Front-end (servidor):** [ex.: Next.js/React/—]  
-**Hospedagem:** [ex.: Vercel/—]
+8.2 Front-end (servidor de aplicação)
 
-### 8.3 Back-end (API/servidor, se existir)
-**Back-end (API):** [ex.: FastAPI/Express/PHP/Laravel/Spring/—]  
-**Banco de dados:** [ex.: SQLite/Postgres/MySQL/MongoDB/—]  
-**Deploy do back-end:** [ex.: Render/Railway/—]
+Front-end (servidor): Vue.js com Vue Router e Tailwind CSS (para estilização rápida e responsiva)
+Hospedagem: Netlify ou Vercel (plataformas que suportam deploys automáticos e integração com GitHub)
+
+8.3 Back-end (API/servidor)
+
+Back-end (API): Node.js com Express.js (para a criação da API RESTful)
+Banco de dados: PostgreSQL (para armazenamento de dados de pedidos, veículos, motoristas e status)
+Deploy do back-end: Heroku ou Render (para deploy de aplicações Node.js com banco de dados PostgreSQL)
 
 ## 9) Plano de Dados (Dia 0) — somente itens 1–3
 <!-- Defina só o essencial para criar o banco depois. -->
 
 ### 9.1 Entidades
-<!-- EXEMPLO:
-     - Usuario — pessoa que usa o sistema (aluno/professor)
-     - Chamado — pedido de ajuda criado por um usuário -->
-- [Entidade 1] — [o que representa em 1 linha]
-- [Entidade 2] — [...]
-- [Entidade 3] — [...]
+
+Usuário — Representa as pessoas que utilizam o sistema (despachante, motorista, gerente).
+
+Pedido de Transporte — Representa um pedido de transporte feito por um despachante.
+
+Veículo — Representa os veículos disponíveis para transporte de carga.
+
+Motorista — Representa os motoristas responsáveis pelos veículos e pedidos de transporte.
 
 ### 9.2 Campos por entidade
 <!-- Use tipos simples: uuid, texto, número, data/hora, booleano, char. -->
@@ -125,23 +163,57 @@ Critérios de aceite:
 | nome            | texto                         | sim         | "Ana Souza"        |
 | email           | texto                         | sim (único) | "ana@exemplo.com"  |
 | senha_hash      | texto                         | sim         | "$2a$10$..."       |
-| papel           | número (0=aluno, 1=professor) | sim         | 0                  |
+| papel           | número (1=despachante   
+                    , 2=motorista, 3 = gerente)   | sim         | 1                  |
 | dataCriacao     | data/hora                     | sim         | 2025-08-20 14:30   |
 | dataAtualizacao | data/hora                     | sim         | 2025-08-20 15:10   |
 
-### Chamado
+### Pedido de Transporte
 | Campo           | Tipo               | Obrigatório | Exemplo                 |
 |-----------------|--------------------|-------------|-------------------------|
 | id              | número             | sim         | 2                       |
-| Usuario_id      | número (fk)        | sim         | 8f3a-...                |
-| texto           | texto              | sim         | "Erro ao compilar"      |
-| estado          | char               | sim         | 'a' \| 'f'              |
-| dataCriacao     | data/hora          | sim         | 2025-08-20 14:35        |
-| dataAtualizacao | data/hora          | sim         | 2025-08-20 14:50        |
+| Origem          | texto              | sim         | "Sao Paulo"             |
+| Destino         | texto              | sim         | "Rio de Janeiro"        |
+| tipoCarga       | texto              | sim         | "Eletronicos"           |
+| dataEntrega     | data/hora          | sim         | 2025-08-20 14:35        |
+| status          | texto              | sim         | "Em Andamento"          |
+| veiculoId       | numero             | sim         | 1                       |
+| motoristaId     | numero             | sim         | 1                       |
+| dataCriacao     | data/hora          | sim         | 2025-08-20 14:30        |
+| dataAtualizacao | data/hora          | sim         | 2025-08-20 15:10        |
+
+### Veiculo
+| Campo           | Tipo               | Obrigatório | Exemplo                 |
+|-----------------|--------------------|-------------|-------------------------|
+| id              | número             | sim         | 2                       |
+| Placa           | texto              | sim         | "ABC-1234"              |
+| Modelo          | texto              | sim         | "Volvo FH"              |
+| Capacidade      | numero(ton)        | sim         | 20                      |
+| status          | texto(disponível,
+                    em trânsito,
+                    manutenção)        | sim         | "Disponivel"            |
+| dataCriacao     | data/hora          | sim         | 2025-08-20 14:30        |
+| dataAtualizacao | data/hora          | sim         | 2025-08-20 15:10        |
+
+### Motorista
+| Campo           | Tipo               | Obrigatório | Exemplo            |
+|-----------------|--------------------|-------------|--------------------|
+| id              | número             | sim         | 1                  |
+| nome            | texto              | sim         | "Carlos Pereira"   |
+| cpf             | texto              | sim (único) | "123.456.789-00"   |
+| veiculoId       | numero             | sim         | 11                 |
+| dataCriacao     | data/hora          | sim         | 2025-08-20 14:30   |
+| dataAtualizacao | data/hora          | sim         | 2025-08-20 15:10   |
 
 ### 9.3 Relações entre entidades
-<!-- Frases simples bastam. EXEMPLO:
-     Um Usuario tem muitos Chamados (1→N).
-     Um Chamado pertence a um Usuario (N→1). -->
-- Um [A] tem muitos [B]. (1→N)
-- Um [B] pertence a um [A]. (N→1)
+Um Usuário pode ter vários Pedidos de Transporte (1→N).
+
+Um Pedido de Transporte pertence a um Usuário (N→1).
+
+Um Pedido de Transporte é atribuído a um Motorista (1→1).
+
+Um Pedido de Transporte é atribuído a um Veículo (1→1).
+
+Um Veículo pode ser utilizado em vários Pedidos de Transporte (1→N).
+
+Um Motorista pode estar associado a vários Pedidos de Transporte (1→N).
