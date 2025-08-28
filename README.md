@@ -1,4 +1,4 @@
-TMS — Sistema de Gerenciamento de Transporte
+# Logix — Sistema de Gerenciamento de Transporte
 
 ## 1) Problema
 
@@ -42,16 +42,12 @@ Plano B: Caso a internet não esteja disponível para atualizações em tempo re
 Se o tempo de desenvolvimento for reduzido, a primeira fatia vertical será limitada à criação e visualização de pedidos com funcionalidades simples de atribuição de veículos e motoristas, sem a necessidade de relatórios ou otimizações avançadas.
 
 ## 5) Hipóteses + validação
-<!-- Preencha as duas frases abaixo. Simples e direto.
-     EXEMPLO Valor: Se o aluno ver sua posição na fila, sente mais controle e conclui melhor a atividade.
-     Validação: teste com 5 alunos; sucesso se ≥4 abrem/fecham chamado sem ajuda.
-     EXEMPLO Viabilidade: Com app no navegador (HTML/CSS/JS + armazenamento local),
-     criar e listar chamados responde em até 1 segundo na maioria das vezes (ex.: 9 de cada 10).
-     Validação: medir no protótipo com 30 ações; meta: pelo menos 27 de 30 ações (9/10) em 1s ou menos. -->
+
 H-Valor: Se despachantes e motoristas puderem visualizar e atualizar status de transporte, então a eficiência no controle das entregas melhora.
 Validação (valor): Teste com despachantes e motoristas; sucesso se a maioria conseguir atualizar e consultar status corretamente.
 
 Com Node.js e PostgreSQL, a criação e visualização de pedidos de transporte leva até 2 segundos para a maioria das interações.
+
 Validação (viabilidade): Medição no protótipo; sucesso se o sistema responder em 2 segundos ou menos na maioria das interações (9 de cada 10).
 
 ## 6) Fluxo principal e primeira fatia
@@ -78,15 +74,7 @@ Usuário consegue visualizar todos os pedidos de transporte cadastrados.
      ![Wireframe - Lista de chamados](img/wf-lista-chamados.png) -->
 1. Tela de Login
 
-A tela de login simples, onde o usuário insere suas credenciais para acessar o sistema.
-
-Campos:
-
-Email (campo de texto)
-
-Senha (campo de texto)
-
-Botão: Entrar
+![alt text](<ChatGPT Image 28 de ago. de 2025, 08_42_56.png>)
 
 2. Tela de Criação de Pedido de Transporte
 
