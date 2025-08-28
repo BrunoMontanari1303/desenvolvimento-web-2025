@@ -64,51 +64,22 @@ Pedido de transporte é salvo corretamente no sistema e aparece na lista.
 Usuário consegue visualizar todos os pedidos de transporte cadastrados.
 
 ## 7) Esboços de algumas telas (wireframes)
-<!-- Vale desenho no papel (foto), Figma, Excalidraw, etc. Não precisa ser bonito, precisa ser claro.
-     EXEMPLO de telas:
-     • Login
-     • Lista de chamados (ordem + tempo desde criação)
-     • Novo chamado (formulário simples)
-     • Painel do professor (atender/encerrar)
-     EXEMPLO de imagem:
-     ![Wireframe - Lista de chamados](img/wf-lista-chamados.png) -->
+
 1. Tela de Login
 
-![alt text](<ChatGPT Image 28 de ago. de 2025, 08_42_56.png>)
+![alt text](<Login TMS.png>)
 
 2. Tela de Criação de Pedido de Transporte
 
-Tela para despachantes criarem um novo pedido de transporte.
+Tela para despachantes criarem um novo pedido de transporte:
 
-Campos:
-
-Origem (campo de texto)
-
-Destino (campo de texto)
-
-Tipo de Carga (dropdown ou campo de texto)
-
-Data de Entrega (campo de data)
-
-Botão: Criar Pedido
+![alt text](<Criação Pedido TMS-1.png>)
 
 3. Tela de Lista de Pedidos de Transporte
 
 A tela exibe todos os pedidos de transporte cadastrados.
 
-Colunas:
-
-ID do Pedido (número único)
-
-Origem
-
-Destino
-
-Status (em andamento, entregue, etc.)
-
-Data de Entrega
-
-Botão: Atualizar Status (para despachante)
+![alt text](<Lista Pedidos.png>)
 
 ## 8) Tecnologias
 8.1 Navegador
@@ -129,7 +100,6 @@ Banco de dados: PostgreSQL (para armazenamento de dados de pedidos, veículos, m
 Deploy do back-end: Heroku ou Render (para deploy de aplicações Node.js com banco de dados PostgreSQL)
 
 ## 9) Plano de Dados (Dia 0) — somente itens 1–3
-<!-- Defina só o essencial para criar o banco depois. -->
 
 ### 9.1 Entidades
 
@@ -142,7 +112,7 @@ Veículo — Representa os veículos disponíveis para transporte de carga.
 Motorista — Representa os motoristas responsáveis pelos veículos e pedidos de transporte.
 
 ### 9.2 Campos por entidade
-<!-- Use tipos simples: uuid, texto, número, data/hora, booleano, char. -->
+
 
 ### Usuario
 | Campo           | Tipo                          | Obrigatório | Exemplo            |
