@@ -172,3 +172,96 @@ Um Pedido de Transporte é atribuído a um Veículo (1→1).
 Um Veículo pode ser utilizado em vários Pedidos de Transporte (1→N).
 
 Um Motorista pode estar associado a vários Pedidos de Transporte (1→N).
+
+### 9.4 Modelagem (SQL) com CREATE TABLE, INSERT e 5 queries de teste.
+
+CREATE TABLE Usuario (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha_hash VARCHAR(255) NOT NULL,
+    papel INT NOT NULL,
+    dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE Veiculo (
+    id SERIAL PRIMARY KEY,
+    placa VARCHAR(10) NOT NULL UNIQUE,
+    modelo VARCHAR(100) NOT NULL,
+    capacidade DECIMAL(10,2) NOT NULL, -- capacidade em toneladas
+    status VARCHAR(50) NOT NULL,
+    dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE Motorista (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    veiculoId INT NOT NULL,
+    dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (veiculoId) REFERENCES Veiculo(id)
+);
+
+
+CREATE TABLE PedidoTransporte (
+    id SERIAL PRIMARY KEY,
+    origem VARCHAR(100) NOT NULL,
+    destino VARCHAR(100) NOT NULL,
+    tipoCarga VARCHAR(100) NOT NULL,
+    dataEntrega TIMESTAMP NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    veiculoId INT NOT NULL,
+    motoristaId INT NOT NULL,
+    dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (veiculoId) REFERENCES Veiculo(id),
+    FOREIGN KEY (motoristaId) REFERENCES Motorista(id)
+);
+
+INSERT INTO Usuario (nome, email, senha_hash, papel) VALUES
+('Ana Souza', 'ana@exemplo.com', '$2a$10$abc...', 1),
+('João Lima', 'joao@exemplo.com', '$2a$10$def...', 2);
+
+INSERT INTO Veiculo (placa, modelo, capacidade, status) VALUES
+('ABC-1234', 'Volvo FH', 20.00, 'Disponivel'),
+('XYZ-5678', 'Scania R450', 25.00, 'Em Manutenção');
+
+INSERT INTO Motorista (nome, cpf, veiculoId) VALUES
+('Carlos Pereira', '123.456.789-00', 1),
+('Marcos Silva', '987.654.321-00', 2);
+
+INSERT INTO PedidoTransporte (origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId) VALUES
+('São Paulo', 'Rio de Janeiro', 'Eletrônicos', '2025-08-20 14:35', 'Em Andamento', 1, 1),
+('Curitiba', 'Porto Alegre', 'Alimentos', '2025-08-21 16:00', 'Pendente', 2, 2);
+
+-- 1. Listar todos os pedidos de transporte com nome do motorista e modelo do veículo
+SELECT p.id, p.origem, p.destino, p.status,
+       m.nome AS motorista, v.modelo AS veiculo
+FROM PedidoTransporte p
+JOIN Motorista m ON p.motoristaId = m.id
+JOIN Veiculo v ON p.veiculoId = v.id;
+
+-- 2. Mostrar todos os veículos disponíveis
+SELECT id, placa, modelo, capacidade
+FROM Veiculo
+WHERE status = 'Disponivel';
+
+-- 3. Quantos pedidos cada motorista já fez
+SELECT m.nome, COUNT(p.id) AS total_pedidos
+FROM Motorista m
+LEFT JOIN PedidoTransporte p ON m.id = p.motoristaId
+GROUP BY m.nome;
+
+-- 4. Listar usuários e seu papel
+SELECT id, nome, email, papel
+FROM Usuario;
+
+-- 5. Buscar todos os pedidos com entrega agendada para depois de 2025-08-20
+SELECT id, origem, destino, dataEntrega, status
+FROM PedidoTransporte
+WHERE dataEntrega > '2025-08-20 00:00:00';
