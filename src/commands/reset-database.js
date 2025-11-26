@@ -1,4 +1,8 @@
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { Client } from "pg";
+import fs from "fs/promises";
 
 dotenv.config();
 
@@ -9,11 +13,11 @@ const {
     // que é a convenção em JavaScript para nomes de variáveis.
 
     // --- Conexão Principal com o Banco ---
-    DB_HOST: dbHost,
-    DB_PORT: dbPort,
-    DB_USER: dbUser,
-    DB_PASSWORD: dbPassword,
-    DB_DATABASE: dbName,
+    PGHOST: dbHost,
+    PGPORT: dbPort,
+    PGUSER: dbUser,
+    PGPASSWORD: dbPassword,
+    PGDATABASE: dbName,
 
     // --- Conexão Administrativa (para reset) ---
     // Aqui definimos um valor padrão ('postgres'). Se PG_DATABASE_ADMIN não estiver no .env,

@@ -1,4 +1,4 @@
-CREATE TABLE Usuario (
+CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -9,7 +9,7 @@ CREATE TABLE Usuario (
 );
 
 
-CREATE TABLE Veiculo (
+CREATE TABLE veiculos (
     id SERIAL PRIMARY KEY,
     placa VARCHAR(10) NOT NULL UNIQUE,
     modelo VARCHAR(100) NOT NULL,
@@ -20,18 +20,18 @@ CREATE TABLE Veiculo (
 );
 
 
-CREATE TABLE Motorista (
+CREATE TABLE motoristas (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     veiculoId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (veiculoId) REFERENCES Veiculo(id)
+    FOREIGN KEY (veiculoId) REFERENCES veiculos(id)
 );
 
 
-CREATE TABLE PedidoTransporte (
+CREATE TABLE pedidos (
     id SERIAL PRIMARY KEY,
     origem VARCHAR(100) NOT NULL,
     destino VARCHAR(100) NOT NULL,
@@ -42,6 +42,12 @@ CREATE TABLE PedidoTransporte (
     motoristaId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (veiculoId) REFERENCES Veiculo(id),
-    FOREIGN KEY (motoristaId) REFERENCES Motorista(id)
+    FOREIGN KEY (veiculoId) REFERENCES veiculos(id),
+    FOREIGN KEY (motoristaId) REFERENCES motoristas(id)
 );
+
+ALTER TABLE pedidos ADD COLUMN totalCount INT NOT NULL DEFAULT 1;
+
+ALTER TABLE pedidos
+  ALTER COLUMN veiculoid DROP NOT NULL,
+  ALTER COLUMN motoristaid DROP NOT NULL;

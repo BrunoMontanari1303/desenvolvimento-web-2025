@@ -4,9 +4,7 @@
   "description": "Despachantes e coordenadores de logística, em empresas de transporte e distribuição, têm dificuldade em gerenciar e rastrear pedidos de transporte e otimizar o uso dos veículos. Isso causa atrasos nas entregas, aumento de custos operacionais e falta de visibilidade das rotas. No início, o foco será despachantes e motoristas, com o objetivo de otimizar o gerenciamento de pedidos e garantir rastreamento simples de entregas.",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:frontend\"",
-    "dev:frontend": "vite",
-    "dev:server": "nodemon src/server.js",
+    "dev": "nodemon src/server.js",
     "start": "node src/server.js",
     "reset-database": "node src/commands/reset-database.js"
   },
@@ -22,21 +20,21 @@
   },
   "homepage": "https://github.com/BrunoMontanari1303/desenvolvimento-web-2025#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.2",
     "bootstrap": "^5.3.8",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
-    "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.3",
     "router-dom": "^3.0.3"
   },
+  "type": "module",
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.0.4",
-    "concurrently": "^9.2.1",
-    "nodemon": "^3.1.10",
-    "vite": "^7.1.7"
-  },
-  "type": "module"
+    "nodemon": "^3.1.10"
+  }
 }

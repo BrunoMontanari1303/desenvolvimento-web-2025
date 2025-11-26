@@ -1,50 +1,46 @@
-import express from 'express'
-import { pool } from '../database/db.js'
+import express from 'express';
+import { ensureAuth } from '../middlewares/authMiddleware.js';
+import { body } from 'express-validator';
+import {
+  listPedidoTransportes,
+  getPedidoTransporte,
+  createPedidoTransporteController,
+  updatePedidoTransporteController,
+  deletePedidoTransporteController,
+  acceptPedidoTransporteController,
+} from '../controllers/pedidoController.js';
 
-const router = express.Router()
 
-// Listar todos os pedidos
-router.get('/', async (req, res) => {
-  const result = await pool.query('SELECT * FROM PedidoTransporte ORDER BY id DESC')
-  res.json(result.rows)
-})
+const router = express.Router();
 
-// Criar novo pedido
-router.post('/', async (req, res) => {
-  const { origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId } = req.body
-  try {
-    const result = await pool.query(
-      'INSERT INTO PedidoTransporte (origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId]
-    )
-    res.status(201).json(result.rows[0])
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-})
+// Listar todos os pedidos de transporte (qualquer usuário logado)
+router.get('/', ensureAuth(), listPedidoTransportes);
 
-// Atualizar pedido
-router.patch('/:id', async (req, res) => {
-  const { origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId } = req.body
-  const { id } = req.params
-  const result = await pool.query(
-    'UPDATE PedidoTransporte SET origem = $1, destino = $2, tipoCarga = $3, dataEntrega = $4, status = $5, veiculoId = $6, motoristaId = $7, dataAtualizacao = CURRENT_TIMESTAMP WHERE id = $8 RETURNING *',
-    [origem, destino, tipoCarga, dataEntrega, status, veiculoId, motoristaId, id]
-  )
-  if (result.rowCount === 0) {
-    return res.status(404).json({ error: 'Pedido não encontrado' })
-  }
-  res.json(result.rows[0])
-})
+// Obter pedido de transporte por ID
+router.get('/:id', ensureAuth(), getPedidoTransporte);
 
-// Deletar pedido
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params
-  const result = await pool.query('DELETE FROM PedidoTransporte WHERE id = $1 RETURNING *', [id])
-  if (result.rowCount === 0) {
-    return res.status(404).json({ error: 'Pedido não encontrado' })
-  }
-  res.status(204).send()
-})
+// Criar um novo pedido de transporte
+router.post('/', ensureAuth(), createPedidoTransporteController);
 
-export default router
+// Atualizar pedido de transporte (ADMIN ou GESTOR)
+router.patch('/:id', ensureAuth(['ADMIN', 'GESTOR']), updatePedidoTransporteController);
+
+// Aceitar pedido de transporte (apenas GESTOR)
+router.patch(
+  '/:id/aceitar',
+  ensureAuth(['GESTOR']),
+  [
+    body('veiculoId')
+      .isInt({ min: 1 })
+      .withMessage('veiculoId deve ser um inteiro maior que zero'),
+    body('motoristaId')
+      .isInt({ min: 1 })
+      .withMessage('motoristaId deve ser um inteiro maior que zero'),
+  ],
+  acceptPedidoTransporteController
+);
+
+// Deletar pedido de transporte (apenas ADMIN)
+router.delete('/:id', ensureAuth(['ADMIN']), deletePedidoTransporteController);
+
+export default router;
