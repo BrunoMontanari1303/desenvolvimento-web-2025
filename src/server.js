@@ -38,8 +38,13 @@ app.use('/auth', authRoutes)
 
 app.patch('/me', ensureAuth(), updateUsuarioAtualController)
 
-app.get('/usuarios/:id(\\d+)', ensureAuth(), getUsuarioSelfOrAdminController)
-app.patch('/usuarios/:id(\\d+)', ensureAuth(), updateUsuarioSelfOrAdminController)
+const onlyNumericId = (req, res, next) => {
+  if (/^\d+$/.test(String(req.params.id))) return next()
+  return next('route')
+}
+
+app.get('/usuarios/:id', ensureAuth(), onlyNumericId, getUsuarioSelfOrAdminController)
+app.patch('/usuarios/:id', ensureAuth(), onlyNumericId, updateUsuarioSelfOrAdminController)
 
 app.use('/usuarios', ensureAuth(['ADMIN']), usuarioRoutes)
 app.use('/veiculos', ensureAuth(['ADMIN', 'GESTOR']), veiculoRoutes)
