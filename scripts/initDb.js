@@ -17,14 +17,27 @@ async function initDb() {
       .filter(Boolean)
 
     for (const stmt of statements) {
-      console.log('Executando:\n', stmt.slice(0, 80), '...')
-      await pool.query(stmt)
+      if (!stmt) continue
+
+      console.log('\n▶ Executando:\n', stmt.slice(0, 120), '...')
+
+      try {
+        await pool.query(stmt)
+      } catch (err) {
+        if (err.code === '42P07' || err.code === '42710' || /already exists/i.test(err.message)) {
+          console.warn('⚠️ Objeto já existe, ignorando e seguindo.')
+          continue
+        }
+
+        console.error('❌ Erro neste comando:', err.message)
+        throw err
+      }
     }
 
-    console.log('✅ Banco inicializado com sucesso!')
+    console.log('\n✅ Banco inicializado/atualizado com sucesso!')
     process.exit(0)
   } catch (err) {
-    console.error('❌ Erro ao inicializar banco:', err)
+    console.error('\n❌ Erro ao inicializar banco:', err)
     process.exit(1)
   }
 }
