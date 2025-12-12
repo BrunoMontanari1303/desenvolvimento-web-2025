@@ -128,7 +128,7 @@ export const updateUsuarioController = [
       const usuarioAtualizado = await updateUsuario(id, {
         nome: nome ?? usuarioExistente.nome,
         email: email ? email.toLowerCase() : usuarioExistente.email,
-        senha_hash,           // 👈 ESSA chave vai para o service
+        senha_hash,           
         papel: papel_code,
       })
 
@@ -145,9 +145,18 @@ export const updateUsuarioController = [
 ]
 
 export const updateUsuarioAtualController = [
-  body('nome').optional().notEmpty().withMessage('O nome não pode estar vazio'),
-  body('email').optional().isEmail().withMessage('O email deve ser válido'),
-  body('senha').optional().isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres'),
+  body('nome')
+    .optional()
+    .notEmpty()
+    .withMessage('O nome não pode estar vazio'),
+  body('email')
+    .optional()
+    .isEmail()
+    .withMessage('O email deve ser válido'),
+  body('senha')
+    .optional()
+    .isLength({ min: 6 })
+    .withMessage('A senha deve ter pelo menos 6 caracteres'),
 
   async (req, res) => {
     const errors = validationResult(req)
@@ -182,6 +191,7 @@ export const updateUsuarioAtualController = [
       if (senha && senha.length >= 6) {
         senha_hash = await bcrypt.hash(senha, 10)
       }
+
       const usuarioAtualizado = await updateUsuario(userId, {
         nome: nome ?? usuarioExistente.nome,
         email: email ? email.toLowerCase() : usuarioExistente.email,
