@@ -1,13 +1,24 @@
 import { pool } from '../database/db.js';
 
 // Listar todos os veículos com paginação
-export const getAllVeiculosFromDB = async (limit, offset, sortBy, order) => {
+export const getAllVeiculosFromDB = async (limit, offset, sortBy, order, usuarioId = null) => {
+  const baseOrder = `ORDER BY ${sortBy} ${order} LIMIT $1 OFFSET $2`;
+
+  if (usuarioId) {
+    const result = await pool.query(
+      `SELECT * FROM veiculos WHERE usuarioId = $3 ${baseOrder}`,
+      [limit, offset, usuarioId]
+    );
+    return result.rows;
+  }
+
   const result = await pool.query(
-    `SELECT * FROM veiculos ORDER BY ${sortBy} ${order} LIMIT $1 OFFSET $2`,
+    `SELECT * FROM veiculos ${baseOrder}`,
     [limit, offset]
   );
   return result.rows;
 };
+
 
 // Obter veículo por ID
 export const getVeiculoByIdFromDB = async (id) => {
@@ -16,10 +27,12 @@ export const getVeiculoByIdFromDB = async (id) => {
 };
 
 // Criar um novo veículo
-export const createVeiculoInDB = async (placa, modelo, capacidade, status) => {
+export const createVeiculoInDB = async (placa, modelo, capacidade, status, usuarioId) => {
   const result = await pool.query(
-    'INSERT INTO veiculos (placa, modelo, capacidade, status) VALUES ($1, $2, $3, $4) RETURNING *',
-    [placa, modelo, capacidade, status]
+    `INSERT INTO veiculos (placa, modelo, capacidade, status, usuarioId)
+     VALUES ($1, $2, $3, $4, $5)
+     RETURNING *`,
+    [placa, modelo, capacidade, status, usuarioId]
   );
   return result.rows[0];
 };

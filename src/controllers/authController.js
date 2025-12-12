@@ -7,15 +7,27 @@ import {
   createUsuarioInDB,
 } from '../repositories/usuarioRepository.js'
 
+const TIPO_PERFIL_MAP = {
+  CLIENTE: 2,    
+  TRANSPORTADORA: 3,
+}
+
+function resolvePapelFromTipoPerfil(rawTipoPerfil) {
+  if (!rawTipoPerfil) return 2 // default CLIENTE/USER
+
+  const key = String(rawTipoPerfil).trim().toUpperCase()
+  return TIPO_PERFIL_MAP[key] ?? 2 // se vier algo estranho, volta pra 2
+}
+
 export const loginController = async (req, res, next) => {
   try {
     const email = String(req.body.email || '').trim().toLowerCase()
-    const password = String(req.body.password || '')
+    const senha = String(req.body.senha || '')
 
-    if (!email || !password) {
+    if (!email || !senha) {
       return res
         .status(400)
-        .json({ status: 'error', message: 'email e password são obrigatórios' })
+        .json({ status: 'error', message: 'email e senha são obrigatórios' })
     }
 
     const user = await getUserWithHashByEmail(email)
@@ -25,7 +37,7 @@ export const loginController = async (req, res, next) => {
         .json({ status: 'error', message: 'Credenciais inválidas' })
     }
 
-    const ok = await bcrypt.compare(password, user.senha_hash)
+    const ok = await bcrypt.compare(senha, user.senha_hash)
     if (!ok) {
       return res
         .status(401)
@@ -35,7 +47,7 @@ export const loginController = async (req, res, next) => {
     const token = jwt.sign(
       { sub: user.id, role: user.papel || 'user' },
       process.env.JWT_SECRET || 'dev-secret',
-      { expiresIn: '8h' }
+      { expiresIn: '1h' }
     )
 
     // Envia de formas redundantes para não ter erro no front
@@ -49,7 +61,7 @@ export const loginController = async (req, res, next) => {
         nome: user.nome,
         email: user.email,
         papel: user.papel,
-        token, // <- e também dentro de data (compatível com muito front)
+        token,
       },
     })
   } catch (e) {
@@ -57,10 +69,8 @@ export const loginController = async (req, res, next) => {
   }
 }
 
-// REGISTRO PÚBLICO (cria USER)
 export const registerController = async (req, res, next) => {
   try {
-    // Erros vindos do express-validator na rota
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({
@@ -72,12 +82,13 @@ export const registerController = async (req, res, next) => {
 
     const nome = String(req.body.nome || '').trim()
     const email = String(req.body.email || '').trim().toLowerCase()
-    const password = String(req.body.password || '')
+    const senha = String(req.body.senha || '')
+    const tipoPerfil = req.body.tipoPerfil // pode vir CLIENTE, TRANSPORTADORA ou undefined
 
-    if (!nome || !email || !password) {
+    if (!nome || !email || !senha) {
       return res
         .status(400)
-        .json({ status: 'error', message: 'nome, email e password são obrigatórios' })
+        .json({ status: 'error', message: 'nome, email e senha são obrigatórios' })
     }
 
     // Verifica se já existe usuário com esse e-mail
@@ -88,9 +99,9 @@ export const registerController = async (req, res, next) => {
         .json({ status: 'error', message: 'Já existe um usuário com esse e-mail' })
     }
 
-    // Cria usuário como USER (2)
-    const senha_hash = await bcrypt.hash(password, 10)
-    const papel = 2 // USER
+    const senha_hash = await bcrypt.hash(senha, 10)
+
+    const papel = resolvePapelFromTipoPerfil(tipoPerfil)
 
     const novoUsuario = await createUsuarioInDB(nome, email, senha_hash, papel)
 

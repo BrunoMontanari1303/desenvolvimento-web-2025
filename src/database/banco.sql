@@ -15,8 +15,10 @@ CREATE TABLE veiculos (
     modelo VARCHAR(100) NOT NULL,
     capacidade DECIMAL(10,2) NOT NULL, -- capacidade em toneladas
     status VARCHAR(50) NOT NULL,
+	usuarioId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
 );
 
 
@@ -25,9 +27,11 @@ CREATE TABLE motoristas (
     nome VARCHAR(100) NOT NULL,
     cpf VARCHAR(14) NOT NULL UNIQUE,
     veiculoId INT NOT NULL,
+	usuarioId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (veiculoId) REFERENCES veiculos(id)
+    FOREIGN KEY (veiculoId) REFERENCES veiculos(id),
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id)
 );
 
 
@@ -38,16 +42,11 @@ CREATE TABLE pedidos (
     tipoCarga VARCHAR(100) NOT NULL,
     dataEntrega TIMESTAMP NOT NULL,
     status VARCHAR(50) NOT NULL,
-    veiculoId INT NOT NULL,
-    motoristaId INT NOT NULL,
+    veiculoId INT,
+    motoristaId INT,
+	quantidade INT,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (veiculoId) REFERENCES veiculos(id),
     FOREIGN KEY (motoristaId) REFERENCES motoristas(id)
 );
-
-ALTER TABLE pedidos ADD COLUMN totalCount INT NOT NULL DEFAULT 1;
-
-ALTER TABLE pedidos
-  ALTER COLUMN veiculoid DROP NOT NULL,
-  ALTER COLUMN motoristaid DROP NOT NULL;

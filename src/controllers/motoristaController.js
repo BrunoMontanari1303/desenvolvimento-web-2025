@@ -4,7 +4,7 @@ import { body, param, validationResult } from 'express-validator';
 // Listar todos os motoristas
 export const listMotoristas = async (req, res) => {
   try {
-    const motoristas = await getAllMotoristas(req.query);
+    const motoristas = await getAllMotoristas(req.query, req.user); // 👈
     res.json({
       status: 'success',
       message: 'Motoristas encontrados.',
@@ -38,35 +38,66 @@ export const getMotorista = async (req, res) => {
 // Criar um novo motorista
 export const createMotoristaController = [
   // Validações dos dados de entrada
-  body('nome').notEmpty().withMessage('O nome é obrigatório'),
-  body('cpf').notEmpty().withMessage('O CPF é obrigatório').isLength({ min: 11, max: 11 }).withMessage('O CPF deve ter 11 caracteres'),
-  body('veiculoId').isInt().withMessage('O ID do veículo deve ser um número inteiro'),
+  body('nome')
+    .notEmpty().withMessage('O nome é obrigatório'),
+
+  body('cpf')
+    .notEmpty().withMessage('O CPF é obrigatório')
+    .isLength({ min: 11, max: 11 }).withMessage('O CPF deve ter 11 dígitos'),
+
+  body('veiculoId')
+    .optional({ nullable: true })
+    .isInt({ min: 1 }).withMessage('O veículo deve ser um ID inteiro positivo'),
 
   // Lógica do controller
   async (req, res) => {
-    const errors = validationResult(req);
+    const errors = validationResult(req)
     if (!errors.isEmpty()) {
       return res.status(422).json({
         status: 'error',
         message: 'Erro de validação',
         errors: errors.array(),
-      });
+      })
     }
 
-    const { nome, cpf, veiculoId } = req.body;
-
     try {
-      const motorista = await createMotorista({ nome, cpf, veiculoId });
-      res.status(201).json({
+      // 👇 vem do JWT (ensureAuth precisa estar na rota)
+      const usuarioId = req.user?.id
+      if (!usuarioId) {
+        return res.status(401).json({
+          status: 'error',
+          message: 'Usuário não autenticado.',
+        })
+      }
+
+      let { nome, cpf, veiculoId } = req.body
+
+      cpf = String(cpf).replace(/\D/g, '')
+
+      veiculoId = veiculoId ? Number(veiculoId) : null
+
+      const motorista = await createMotorista({
+        nome: nome.trim(),
+        cpf,
+        veiculoId,
+        usuarioId,
+      })
+
+      return res.status(201).json({
         status: 'success',
         message: 'Motorista criado com sucesso.',
         data: motorista,
-      });
+      })
     } catch (error) {
-      res.status(400).json({ status: 'error', message: error.message });
+      console.error('Erro ao criar motorista:', error)
+      return res.status(500).json({
+        status: 'error',
+        message: 'Erro ao criar motorista.',
+        details: error.message,
+      })
     }
-  }
-];
+  },
+]
 
 // Atualizar motorista
 export const updateMotoristaController = [

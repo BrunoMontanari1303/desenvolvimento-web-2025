@@ -1,9 +1,19 @@
 import { pool } from '../database/db.js';
 
 // Listar todos os motoristas com paginação
-export const getAllMotoristasFromDB = async (limit, offset, sortBy, order) => {
+export const getAllMotoristasFromDB = async (limit, offset, sortBy, order, usuarioId = null) => {
+  const baseOrder = `ORDER BY ${sortBy} ${order} LIMIT $1 OFFSET $2`;
+
+  if (usuarioId) {
+    const result = await pool.query(
+      `SELECT * FROM motoristas WHERE usuarioId = $3 ${baseOrder}`,
+      [limit, offset, usuarioId]
+    );
+    return result.rows;
+  }
+
   const result = await pool.query(
-    `SELECT * FROM motoristas ORDER BY ${sortBy} ${order} LIMIT $1 OFFSET $2`,
+    `SELECT * FROM motoristas ${baseOrder}`,
     [limit, offset]
   );
   return result.rows;
@@ -16,10 +26,12 @@ export const getMotoristaByIdFromDB = async (id) => {
 };
 
 // Criar um novo motorista
-export const createMotoristaInDB = async (nome, cpf, veiculoId) => {
+export const createMotoristaInDB = async (nome, cpf, veiculoId, usuarioId) => {
   const result = await pool.query(
-    'INSERT INTO motoristas (nome, cpf, veiculoId) VALUES ($1, $2, $3) RETURNING *',
-    [nome, cpf, veiculoId]
+    `INSERT INTO motoristas (nome, cpf, veiculoId, usuarioId)
+     VALUES ($1, $2, $3, $4)
+     RETURNING *`,
+    [nome, cpf, veiculoId, usuarioId]
   );
   return result.rows[0];
 };

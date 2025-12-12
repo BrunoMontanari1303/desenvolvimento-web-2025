@@ -18,9 +18,14 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json({ limit: '1mb' })); 
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.FRONTEND_URL,
+].filter(Boolean)
+
 app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
+  origin: allowedOrigins,
+  credentials: true,
 }))
 
 

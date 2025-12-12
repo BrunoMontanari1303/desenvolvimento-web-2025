@@ -13,10 +13,15 @@ router.post(
   [
     body('nome').notEmpty().withMessage('Nome é obrigatório'),
     body('email').isEmail().withMessage('E-mail inválido'),
-    body('password')
+    body('senha')
       .isLength({ min: 6 })
       .withMessage('Senha deve ter pelo menos 6 caracteres'),
+    body('tipoPerfil')
+      .optional()
+      .isIn(['CLIENTE', 'TRANSPORTADORA'])
+      .withMessage('tipoPerfil inválido'),
   ],
+
   registerController
 )
 
