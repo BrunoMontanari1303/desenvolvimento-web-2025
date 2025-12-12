@@ -18,7 +18,7 @@ CREATE TABLE veiculos (
 	usuarioId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
+    FOREIGN KEY (usuarioId) REFERENCES usuarios(id)
 );
 
 
