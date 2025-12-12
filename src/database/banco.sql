@@ -13,11 +13,11 @@ CREATE TABLE veiculos (
     id SERIAL PRIMARY KEY,
     placa VARCHAR(10) NOT NULL UNIQUE,
     modelo VARCHAR(100) NOT NULL,
-    capacidade DECIMAL(10,2) NOT NULL, -- capacidade em toneladas
+    capacidade DECIMAL(10,2) NOT NULL,
     status VARCHAR(50) NOT NULL,
 	usuarioId INT NOT NULL,
     dataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    dataAtualizacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuarioId) REFERENCES usuarios(id),
 );
 
