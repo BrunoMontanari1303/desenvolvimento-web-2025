@@ -144,6 +144,63 @@ export const updateUsuarioController = [
   },
 ]
 
+export const updateUsuarioAtualController = [
+  body('nome').optional().notEmpty().withMessage('O nome não pode estar vazio'),
+  body('email').optional().isEmail().withMessage('O email deve ser válido'),
+  body('senha').optional().isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres'),
+
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        status: 'error',
+        message: 'Erro de validação',
+        errors: errors.array(),
+      })
+    }
+
+    const userId = req.user?.id
+    if (!userId) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'Usuário não autenticado.',
+      })
+    }
+
+    const { nome, email, senha } = req.body
+
+    try {
+      const usuarioExistente = await getUsuarioById(userId)
+      if (!usuarioExistente) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Usuário não encontrado.',
+        })
+      }
+
+      let senha_hash = usuarioExistente.senha_hash
+      if (senha && senha.length >= 6) {
+        senha_hash = await bcrypt.hash(senha, 10)
+      }
+      const usuarioAtualizado = await updateUsuario(userId, {
+        nome: nome ?? usuarioExistente.nome,
+        email: email ? email.toLowerCase() : usuarioExistente.email,
+        senha_hash,
+        papel: usuarioExistente.papel,
+      })
+
+      return res.json({
+        status: 'success',
+        message: 'Perfil atualizado com sucesso.',
+        data: usuarioAtualizado,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ status: 'error', message: error.message })
+    }
+  },
+]
+
 // Deletar usuário
 export const deleteUsuarioController = [
   // Validação do ID

@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes.js'
 import path from 'path'
 import { fileURLToPath } from 'url';
 import { ensureAuth } from './middlewares/authMiddleware.js';
+import { updateUsuarioAtualController } from './controllers/usuarioController.js';
 
 dotenv.config();
 
@@ -30,6 +31,8 @@ app.use(cors({
 
 
 app.use('/auth', authRoutes)
+
+app.patch('/me', ensureAuth(), updateUsuarioAtualController)
 
 app.use('/usuarios', ensureAuth(['ADMIN']), usuarioRoutes)
 app.use('/veiculos', ensureAuth(['ADMIN', 'GESTOR']), veiculoRoutes)
