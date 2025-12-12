@@ -211,6 +211,118 @@ export const updateUsuarioAtualController = [
   },
 ]
 
+export const getUsuarioSelfOrAdminController = async (req, res, next) => {
+  try {
+    const targetId = Number(req.params.id)
+    const requesterId = Number(req.user?.id)
+    const role = String(req.user?.role || '').toUpperCase()
+
+    const isAdmin = role === 'ADMIN'
+    const isOwner = requesterId === targetId
+
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Você só pode acessar o próprio perfil.',
+      })
+    }
+
+    const usuario = await getUsuarioById(targetId)
+    if (!usuario) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'Usuário não encontrado.',
+      })
+    }
+
+    return res.json({
+      status: 'success',
+      message: 'Usuário encontrado.',
+      data: {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        papel: usuario.papel,
+      },
+    })
+  } catch (e) {
+    next(e)
+  }
+}
+
+export const updateUsuarioSelfOrAdminController = [
+  param('id').isInt().withMessage('O ID deve ser um número inteiro'),
+  body('nome').optional().notEmpty().withMessage('O nome não pode estar vazio'),
+  body('email').optional().isEmail().withMessage('O email deve ser válido'),
+  body('senha').optional().isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres'),
+  body('papel').optional(),
+
+  async (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        status: 'error',
+        message: 'Erro de validação',
+        errors: errors.array(),
+      })
+    }
+
+    const targetId = Number(req.params.id)
+    const requesterId = Number(req.user?.id)
+    const role = String(req.user?.role || '').toUpperCase()
+
+    const isAdmin = role === 'ADMIN'
+    const isOwner = requesterId === targetId
+
+    if (!isAdmin && !isOwner) {
+      return res.status(403).json({
+        status: 'error',
+        message: 'Você só pode editar o próprio perfil.',
+      })
+    }
+
+    const { nome, email, senha, papel } = req.body
+
+    try {
+      const usuarioExistente = await getUsuarioById(targetId)
+      if (!usuarioExistente) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Usuário não encontrado.',
+        })
+      }
+
+      let senha_hash = usuarioExistente.senha_hash
+      if (senha && String(senha).length >= 6) {
+        senha_hash = await bcrypt.hash(String(senha), 10)
+      }
+
+      // Se NÃO for admin, ignora qualquer tentativa de mudar papel
+      const papel_final = isAdmin
+        ? (papel !== undefined && papel !== null ? normRole(papel) : usuarioExistente.papel)
+        : usuarioExistente.papel
+
+      const usuarioAtualizado = await updateUsuario(targetId, {
+        nome: nome ?? usuarioExistente.nome,
+        email: email ? String(email).toLowerCase() : usuarioExistente.email,
+        senha_hash,
+        papel: papel_final,
+      })
+
+      return res.json({
+        status: 'success',
+        message: isAdmin && !isOwner
+          ? 'Usuário atualizado com sucesso.'
+          : 'Perfil atualizado com sucesso.',
+        data: usuarioAtualizado,
+      })
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ status: 'error', message: error.message })
+    }
+  },
+]
+
 // Deletar usuário
 export const deleteUsuarioController = [
   // Validação do ID
