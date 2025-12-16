@@ -20,6 +20,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); 
 
+const helmet = require('helmet');
 const app = express();
 app.use(express.json({ limit: '1mb' })); 
 
@@ -33,6 +34,23 @@ app.use(cors({
   credentials: true,
 }))
 
+app.use(helmet());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],   // Permite carregar recursos apenas do mesmo domínio
+      scriptSrc: ["'self'"],  // Permite scripts do mesmo domínio
+      styleSrc: ["'self'", "https://fonts.googleapis.com"],  // Permite estilos do mesmo domínio
+      connectSrc: ["'self'", "https://backenddevweb.onrender.com", "https://logix-rho.vercel.app"],  // Permite conexões API do mesmo domínio e os urls no ar
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],  // Permite fontes do Google Fonts
+      objectSrc: ["'none'"],  // Não permite carregamento de objetos ou Flash
+      childSrc: ["'none'"],   // Não permite janelas pop-up ou iframes
+      formAction: ["'self'"], // Permite formulários apenas no mesmo domínio
+      frameAncestors: ["'none'"], // Impede que a página seja incorporada em iframes
+    },
+  })
+);
 
 app.use('/auth', authRoutes)
 

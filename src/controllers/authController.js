@@ -46,7 +46,7 @@ export const loginController = async (req, res, next) => {
 
     const token = jwt.sign(
       { sub: user.id, role: user.papel || 'user' },
-      process.env.JWT_SECRET || 'dev-secret',
+      process.env.JWT_SECRET,
       { expiresIn: '1h' }
     )
 
@@ -55,7 +55,7 @@ export const loginController = async (req, res, next) => {
     return res.json({
       status: 'success',
       message: 'Login realizado com sucesso.',
-      token, // <- direto aqui
+      token,
       data: {
         id: user.id,
         nome: user.nome,
@@ -83,7 +83,7 @@ export const registerController = async (req, res, next) => {
     const nome = String(req.body.nome || '').trim()
     const email = String(req.body.email || '').trim().toLowerCase()
     const senha = String(req.body.senha || '')
-    const tipoPerfil = req.body.tipoPerfil // pode vir CLIENTE, TRANSPORTADORA ou undefined
+    const tipoPerfil = req.body.tipoPerfil
 
     if (!nome || !email || !senha) {
       return res

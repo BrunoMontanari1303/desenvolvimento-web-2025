@@ -37,7 +37,7 @@ function getRoleNameFromToken(roleFromToken) {
 function normalizeAllowedRoles(allowedRoles) {
   return allowedRoles
     .map(normalizeRoleName)
-    .filter(Boolean) // remove null
+    .filter(Boolean)
 }
 
 
@@ -58,7 +58,7 @@ export function ensureAuth(allowedRoles = []) {
     try {
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || 'dev-secret'
+        process.env.JWT_SECRET
       )
 
       const roleName = getRoleNameFromToken(decoded.role)
