@@ -121,3 +121,10 @@ POST	  /pedidos	            Sim	             Qualquer	           Cria pedido
 PATCH	  /pedidos/:id	        Sim	           ADMIN/GESTOR	           Atualiza pedido
 PATCH	  /pedidos/:id/aceitar	Sim	              GESTOR	           Aceita pedido
 DELETE	  /pedidos/:id	        Sim	               ADMIN	           Remove pedido
+
+- Imagens dos diagramas:
+
+ ![Contexto](SystemDesign/Contexto.pdf)
+ ![Container](SystemDesign/Container.pdf)
+ ![ERD](SystemDesign/ERD.pdf)
+ ![Sequencia](SystemDesign/Sequencia.pdf)
