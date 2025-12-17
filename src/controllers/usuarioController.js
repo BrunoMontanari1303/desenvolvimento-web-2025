@@ -62,29 +62,6 @@ export const getUsuario = async (req, res) => {
   }
 };
 
-
-// Criar um novo usuário
-export const createUsuarioController = async (req, res, next) => {
-  try {
-    const { nome, email, senha, papel } = req.body
-    if (!nome || !email || !senha) {
-      return res.status(400).json({ status: 'error', message: 'Nome, e-mail e senha são obrigatórios.' })
-    }
-
-    const senha_hash = await bcrypt.hash(senha, 10)
-    const papel_code = normRole(papel)      // <-- transforma "ADMIN" em 1
-
-    const novo = await createUsuario({
-      nome,
-      email: email.toLowerCase(),
-      senha_hash,
-      papel: papel_code
-    })
-
-    return res.status(201).json({ status: 'success', data: novo })
-  } catch (e) { next(e) }
-}
-
 // Atualizar usuário
 export const updateUsuarioController = [
   param('id').isInt().withMessage('O ID deve ser um número inteiro'),
