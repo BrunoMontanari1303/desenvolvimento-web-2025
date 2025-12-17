@@ -20,17 +20,17 @@ npm
 cd BackEndDevWeb
 npm install
 
-# configurar variáveis
-cp .env.example .env
-# edite o .env (principalmente PGHOST/PGPORT/PGDATABASE/PGUSER/PGPASSWORD e JWT_SECRET)
+# Configurar variáveis:
 
-# cria as tabelas (schema está em src/database/banco.sql)
+edite o .env (principalmente PGHOST/PGPORT/PGDATABASE/PGUSER/PGPASSWORD e JWT_SECRET)
+
+# Cria as tabelas (schema está em src/database/banco.sql)
 npm run init-db
 
-# subir a API
+# Subir a API
 npm start
 
-API disponível em: http://localhost:3000
+API disponível em: https://backenddevweb.onrender.com
 
 Porta padrão: PORT=3000 (configurável no .env)
 
@@ -43,10 +43,6 @@ Isso apaga o banco configurado em PGDATABASE.
 2) Front-end (Web)
 cd FrontEndDevWeb
 npm install
-
-# criar .env
-# VITE_API_URL=http://localhost:3000
-
 npm run build
 
 Front disponível em: https://logix-rho.vercel.app
@@ -69,9 +65,7 @@ PGDATABASE=gerenciamento
 PGUSER=postgres
 PGPASSWORD=postgres
 
-Front: 
-
-VITE_API_URL=https://backenddevweb.onrender.com
+Front não utiliza variaveis de ambiente
 
 - Usuário(s) de teste e fluxos a demonstrar
 Papéis (RBAC)
@@ -85,14 +79,10 @@ GESTOR (3): transportadora/gestor (ex.: cadastrar veículos/motoristas e aceitar
 Usuários de teste (login/senha):
 
 ADMINISTRADOR: admin@logix.local / admin123
-
 CLIENTE (USER): cliente@logix.local / Teste@123
-
 TRANSPORTADORA (GESTOR): gestor@logix.local / Teste@123
 
 - API — endpoints principais
-
-Quase todos os endpoints exigem Authorization: Bearer <TOKEN> (exceto login/registro).
 
 Método	  Rota	            Autenticação	      Papel	               Resumo
 
