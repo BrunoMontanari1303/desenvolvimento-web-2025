@@ -5,7 +5,7 @@ import { body, param, validationResult } from 'express-validator';
 // Listar todos os veículos com paginação e ordenação
 export const listVeiculos = async (req, res) => {
   try {
-    const veiculos = await getAllVeiculos(req.query, req.user); // 👈 passou o user
+    const veiculos = await getAllVeiculos(req.query, req.user);
     res.json({
       status: 'success',
       message: 'Veículos encontrados.',
@@ -39,15 +39,10 @@ export const getVeiculo = async (req, res) => {
 // Criar um novo veículo
 export const createVeiculoController = [
   // Validações dos dados de entrada
-  body('placa')
-    .notEmpty().withMessage('A placa é obrigatória')
-    .isLength({ min: 7, max: 7 }).withMessage('A placa deve ter 7 caracteres'),
-  body('modelo')
-    .notEmpty().withMessage('O modelo é obrigatório'),
-  body('capacidade')
-    .isFloat({ min: 0 }).withMessage('A capacidade deve ser um número positivo'),
-  body('status')
-    .notEmpty().withMessage('O status é obrigatório'),
+  body('placa').notEmpty().withMessage('A placa é obrigatória').isLength({ min: 7, max: 7 }).withMessage('A placa deve ter 7 caracteres'),
+  body('modelo').notEmpty().withMessage('O modelo é obrigatório'),
+  body('capacidade').isFloat({ min: 0 }).withMessage('A capacidade deve ser um número positivo'),
+  body('status').notEmpty().withMessage('O status é obrigatório'),
 
   // Lógica do controller
   async (req, res) => {
@@ -76,7 +71,7 @@ export const createVeiculoController = [
         modelo: modelo.trim(),
         capacidade: Number(capacidade),
         status,
-        usuarioId, // 👈 agora existe
+        usuarioId,
       })
 
       return res.status(201).json({

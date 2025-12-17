@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { createUsuario, getUsuarioById, updateUsuario, deleteUsuario, getAllUsuarios, getUsuarioByEmail } from '../services/usuarioService.js';
+import { getUsuarioById, updateUsuario, deleteUsuario, getAllUsuarios, getUsuarioByEmail } from '../services/usuarioService.js';
 import { body, param, validationResult } from 'express-validator';
 
 const ROLE_MAP_IN = {
@@ -122,18 +122,9 @@ export const updateUsuarioController = [
 ]
 
 export const updateUsuarioAtualController = [
-  body('nome')
-    .optional()
-    .notEmpty()
-    .withMessage('O nome não pode estar vazio'),
-  body('email')
-    .optional()
-    .isEmail()
-    .withMessage('O email deve ser válido'),
-  body('senha')
-    .optional()
-    .isLength({ min: 6 })
-    .withMessage('A senha deve ter pelo menos 6 caracteres'),
+  body('nome').optional().notEmpty().withMessage('O nome não pode estar vazio'),
+  body('email').optional().isEmail().withMessage('O email deve ser válido'),
+  body('senha').optional().isLength({ min: 6 }).withMessage('A senha deve ter pelo menos 6 caracteres'),
 
   async (req, res) => {
     const errors = validationResult(req)

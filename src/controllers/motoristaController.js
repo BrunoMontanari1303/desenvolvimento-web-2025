@@ -38,16 +38,9 @@ export const getMotorista = async (req, res) => {
 // Criar um novo motorista
 export const createMotoristaController = [
   // Validações dos dados de entrada
-  body('nome')
-    .notEmpty().withMessage('O nome é obrigatório'),
-
-  body('cpf')
-    .notEmpty().withMessage('O CPF é obrigatório')
-    .isLength({ min: 11, max: 11 }).withMessage('O CPF deve ter 11 dígitos'),
-
-  body('veiculoId')
-    .optional({ nullable: true })
-    .isInt({ min: 1 }).withMessage('O veículo deve ser um ID inteiro positivo'),
+  body('nome').notEmpty().withMessage('O nome é obrigatório'),
+  body('cpf').notEmpty().withMessage('O CPF é obrigatório').isLength({ min: 11, max: 11 }).withMessage('O CPF deve ter 11 dígitos'),
+  body('veiculoId').optional({ nullable: true }).isInt({ min: 1 }).withMessage('O veículo deve ser um ID inteiro positivo'),
 
   // Lógica do controller
   async (req, res) => {
@@ -61,7 +54,7 @@ export const createMotoristaController = [
     }
 
     try {
-      // 👇 vem do JWT (ensureAuth precisa estar na rota)
+      // vem do JWT (ensureAuth precisa estar na rota)
       const usuarioId = req.user?.id
       if (!usuarioId) {
         return res.status(401).json({
