@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import helmet from 'helmet';
 import usuarioRoutes from './routes/usuario.routes.js'
 import veiculoRoutes from './routes/veiculo.routes.js'
 import motoristaRoutes from './routes/motorista.routes.js'
@@ -20,7 +21,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); 
 
-const helmet = require('helmet');
+
 const app = express();
 app.use(express.json({ limit: '1mb' })); 
 
