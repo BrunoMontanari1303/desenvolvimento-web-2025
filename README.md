@@ -5,7 +5,7 @@ Link do Front End no Git: https://github.com/BrunoMontanari1303/FrontEndDevWeb
 
 O Logix é um sistema web (TMS) voltado para gerenciamento de pedidos de transporte, permitindo cadastrar e acompanhar pedidos (shipments), além de manter dados de veículos e motoristas. O objetivo é dar mais controle e visibilidade ao fluxo de transporte, reduzindo retrabalho e centralizando as informações em um único ambiente.
 
-A arquitetura segue o modelo SPA + API: o Front consome uma API REST no Back via Axios, usando JWT (Bearer Token) para autenticação e RBAC (controle por papéis) para autorização. O Back é organizado em camadas (routes → controllers → services → repositories) e persiste dados em PostgreSQL usando a lib pg.
+A arquitetura segue o modelo SPA + API: o Front consome uma API REST no Back via Axios, usando JWT (Bearer Token) para autenticação, CSP para segurança modesta e RBAC (controle por papéis) para autorização. O Back é organizado em camadas (routes → controllers → services → repositories) e persiste dados em PostgreSQL usando a lib pg.
 
 - Como executar (passo a passo)
 Pré-requisitos
