@@ -103,7 +103,9 @@ PGPASSWORD
 
 Front-end
 
-O front-end não utiliza variáveis de ambiente.
+Front-end: 
+
+VITE_API_URL=http://localhost:3000
 
 - Controle de Acesso (RBAC)
 
