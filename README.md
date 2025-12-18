@@ -7,15 +7,15 @@ https://github.com/BrunoMontanari1303/BackEndDevWeb
 Link do Front End no Git:
 https://github.com/BrunoMontanari1303/FrontEndDevWeb
 
-Descrição do Projeto
+- Descrição do Projeto
 
 O Logix é um sistema web (TMS) voltado para gerenciamento de pedidos de transporte, permitindo cadastrar e acompanhar pedidos (shipments), além de manter dados de veículos e motoristas. O objetivo é dar mais controle e visibilidade ao fluxo de transporte, reduzindo retrabalho e centralizando as informações em um único ambiente.
 
-Arquitetura
+- Arquitetura
 
 A arquitetura segue o modelo SPA + API: o Front consome uma API REST no Back via Axios, usando JWT (Bearer Token) para autenticação, CSP para segurança modesta e RBAC (controle por papéis) para autorização. O Back é organizado em camadas (routes → controllers → services → repositories) e persiste dados em PostgreSQL usando a lib pg.
 
-Como Executar o Projeto
+- Como Executar o Projeto
 Pré-requisitos
 
 Node.js 18+ (recomendado LTS)
@@ -24,7 +24,7 @@ PostgreSQL 13+
 
 npm
 
-Back-end (API)
+Back-end (API):
 
 Para executar, acessar a pasta BackEndDevWeb e executar:
 
@@ -69,7 +69,7 @@ npm run reset-database
 
 Esse comando realiza DROP e CREATE do banco e reaplica o banco.sql, apagando o banco configurado em PGDATABASE.
 
-Front-end (Web)
+Front-end (Web):
 
 Para executar, acessar a pasta FrontEndDevWeb e executar:
 
@@ -105,7 +105,7 @@ Front-end
 
 O front-end não utiliza variáveis de ambiente.
 
-Controle de Acesso (RBAC)
+- Controle de Acesso (RBAC)
 
 O sistema utiliza controle de acesso por papéis (RBAC), sendo definidos os seguintes perfis:
 
@@ -132,7 +132,7 @@ login: gestor@logix.local
 
 senha: Teste@123
 
-API — Endpoints Principais
+- API — Endpoints Principais
 
 POST /auth/login — sem autenticação — login e retorno do token
 
