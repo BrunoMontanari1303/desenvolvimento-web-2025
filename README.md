@@ -1,13 +1,21 @@
-Link do Back End no Git: https://github.com/BrunoMontanari1303/BackEndDevWeb
-Link do Front End no Git: https://github.com/BrunoMontanari1303/FrontEndDevWeb
+# Logix — Sistema de Gerenciamento de Transporte (TMS)
+Repositórios
 
-- Descrição do projeto e arquitetura
+Link do Back End no Git:
+https://github.com/BrunoMontanari1303/BackEndDevWeb
+
+Link do Front End no Git:
+https://github.com/BrunoMontanari1303/FrontEndDevWeb
+
+Descrição do Projeto
 
 O Logix é um sistema web (TMS) voltado para gerenciamento de pedidos de transporte, permitindo cadastrar e acompanhar pedidos (shipments), além de manter dados de veículos e motoristas. O objetivo é dar mais controle e visibilidade ao fluxo de transporte, reduzindo retrabalho e centralizando as informações em um único ambiente.
 
+Arquitetura
+
 A arquitetura segue o modelo SPA + API: o Front consome uma API REST no Back via Axios, usando JWT (Bearer Token) para autenticação, CSP para segurança modesta e RBAC (controle por papéis) para autorização. O Back é organizado em camadas (routes → controllers → services → repositories) e persiste dados em PostgreSQL usando a lib pg.
 
-- Como executar (passo a passo)
+Como Executar o Projeto
 Pré-requisitos
 
 Node.js 18+ (recomendado LTS)
@@ -16,98 +24,162 @@ PostgreSQL 13+
 
 npm
 
-1) Back-end (API)
-cd BackEndDevWeb
+Back-end (API)
+
+Para executar, acessar a pasta BackEndDevWeb e executar:
+
 npm install
 
-# Configurar variáveis:
 
-edite o .env (principalmente PGHOST/PGPORT/PGDATABASE/PGUSER/PGPASSWORD e JWT_SECRET)
+Em seguida, configurar as variáveis de ambiente editando o arquivo .env, principalmente:
 
-# Cria as tabelas (schema está em src/database/banco.sql)
+PGHOST
+
+PGPORT
+
+PGDATABASE
+
+PGUSER
+
+PGPASSWORD
+
+JWT_SECRET
+
+Para criar as tabelas, utilizar o comando:
+
 npm run init-db
 
-# Subir a API
+
+O schema está localizado em src/database/banco.sql.
+
+Para subir a API, executar:
+
 npm start
 
-API disponível em: https://backenddevweb.onrender.com
 
-Porta padrão: PORT=3000 (configurável no .env)
+A API está disponível em:
+https://backenddevweb.onrender.com
 
-Alternativa (opcional): reset completo do banco (DROP/CREATE + aplica o banco.sql) usando:
+Utiliza por padrão a porta 3000, configurável no .env.
+
+Como alternativa opcional, é possível realizar um reset completo do banco utilizando:
 
 npm run reset-database
 
-Isso apaga o banco configurado em PGDATABASE.
 
-2) Front-end (Web)
-cd FrontEndDevWeb
+Esse comando realiza DROP e CREATE do banco e reaplica o banco.sql, apagando o banco configurado em PGDATABASE.
+
+Front-end (Web)
+
+Para executar, acessar a pasta FrontEndDevWeb e executar:
+
 npm install
 npm run build
 
-Front disponível em: https://logix-rho.vercel.app
 
-Porta padrão do Vite: 5173
+O front-end está disponível em:
+https://logix-rho.vercel.app
 
-- Variáveis de ambiente usadas (.env.example)
+Utiliza a porta padrão 5173 do Vite.
 
-Back: 
+Variáveis de Ambiente
+Back-end
 
-# API
 PORT=3000
-JWT_SECRET=uma-chave-forte-aqui
+
+JWT_SECRET
+
 FRONTEND_URL=https://logix-rho.vercel.app/
 
-# PostgreSQL
-PGHOST=localhost
+PGHOST
+
 PGPORT=5432
-PGDATABASE=gerenciamento
-PGUSER=postgres
-PGPASSWORD=postgres
 
-Front não utiliza variaveis de ambiente
+PGDATABASE
 
-- Usuário(s) de teste e fluxos a demonstrar
-Papéis (RBAC)
+PGUSER
 
-ADMIN (1): administração total (ex.: gerenciar usuários)
+PGPASSWORD
 
-USER (2): cliente/usuário padrão (ex.: criar e acompanhar pedidos)
+Front-end
 
-GESTOR (3): transportadora/gestor (ex.: cadastrar veículos/motoristas e aceitar pedidos)
+O front-end não utiliza variáveis de ambiente.
 
-Usuários de teste (login/senha):
+Controle de Acesso (RBAC)
 
-ADMINISTRADOR: admin@logix.local / admin123
-CLIENTE (USER): cliente@logix.local / Teste@123
-TRANSPORTADORA (GESTOR): gestor@logix.local / Teste@123
+O sistema utiliza controle de acesso por papéis (RBAC), sendo definidos os seguintes perfis:
 
-- API — endpoints principais
+ADMIN (1): responsável pela administração total do sistema, como gerenciamento de usuários
 
-Método	  Rota	            Autenticação	      Papel	               Resumo
+USER (2): representando o cliente ou usuário padrão, responsável por criar e acompanhar pedidos
 
-POST	  /auth/login	        Não	                —	               Login (retorna token)
-POST	  /auth/register	    Não	                —	               Cria USER/GESTOR
-PATCH	  /me	                Sim	             Qualquer	           Atualiza o próprio perfil
-GET	      /usuarios	            Sim	              ADMIN	               Lista usuários
-GET	      /usuarios/by-email    Sim	              ADMIN	               Busca usuário por e-mail
-GET	      /usuarios/:id	        Sim	           SELF ou ADMIN	       Busca usuários
-PATCH	  /usuarios/:id	        Sim	           SELF ou ADMIN	       Atualiza usuário
-POST	  /usuarios	            Sim	              ADMIN	               Cria usuário
-DELETE	  /usuarios/:id	        Sim               ADMIN	               Remove usuário
-GET	      /veiculos	            Sim	           ADMIN/GESTOR	           Lista veículos 
-GET	      /veiculos/:id	        Sim	           ADMIN/GESTOR	           Detalha veículo
-POST	  /veiculos	            Sim	           ADMIN/GESTOR	           Cria veículo
-PATCH	  /veiculos/:id	        Sim	           ADMIN/GESTOR	           Atualiza veículo
-DELETE	  /veiculos/:id	        Sim	           ADMIN/GESTOR	           Remove veículo
-GET	      /motoristas	        Sim	           ADMIN/GESTOR	           Lista motoristas
-GET	      /motoristas/:id	    Sim	           ADMIN/GESTOR	           Detalha motorista
-POST	  /motoristas	        Sim	           ADMIN/GESTOR	           Cria motorista
-PATCH	  /motoristas/:id	    Sim	           ADMIN/GESTOR	           Atualiza motorista
-DELETE	  /motoristas/:id	    Sim	           ADMIN/GESTOR	           Remove motorista
-GET	      /pedidos	            Sim	             Qualquer	           Lista pedidos
-GET	      /pedidos/:id	        Sim	             Qualquer	           Detalha pedido
-POST	  /pedidos	            Sim	             Qualquer	           Cria pedido
-PATCH	  /pedidos/:id	        Sim	           ADMIN/GESTOR	           Atualiza pedido
-PATCH	  /pedidos/:id/aceitar	Sim	              GESTOR	           Aceita pedido
-DELETE	  /pedidos/:id	        Sim	               ADMIN	           Remove pedido
+GESTOR (3): representando a transportadora ou gestor, responsável por cadastrar veículos e motoristas e aceitar pedidos
+
+Usuários de Teste
+
+ADMINISTRADOR:
+login: admin@logix.local
+
+senha: admin123
+
+CLIENTE (USER):
+login: cliente@logix.local
+
+senha: Teste@123
+
+TRANSPORTADORA (GESTOR):
+login: gestor@logix.local
+
+senha: Teste@123
+
+API — Endpoints Principais
+
+POST /auth/login — sem autenticação — login e retorno do token
+
+POST /auth/register — sem autenticação — criação de usuários USER ou GESTOR
+
+PATCH /me — com autenticação — atualização do próprio perfil
+
+GET /usuarios — autenticação ADMIN — listar usuários
+
+GET /usuarios/by-email — autenticação ADMIN — busca por e-mail
+
+GET /usuarios/:id — autenticação SELF ou ADMIN — busca de usuários
+
+PATCH /usuarios/:id — autenticação SELF ou ADMIN — atualização de usuários
+
+POST /usuarios — autenticação ADMIN — criação de usuários
+
+DELETE /usuarios/:id — autenticação ADMIN — remoção de usuários
+
+GET /veiculos — autenticação ADMIN ou GESTOR — listagem
+
+GET /veiculos/:id — autenticação ADMIN ou GESTOR — detalhamento
+
+POST /veiculos — autenticação ADMIN ou GESTOR — criação
+
+PATCH /veiculos/:id — autenticação ADMIN ou GESTOR — atualização
+
+DELETE /veiculos/:id — autenticação ADMIN ou GESTOR — remoção
+
+GET /motoristas — autenticação ADMIN ou GESTOR — listagem
+
+GET /motoristas/:id — autenticação ADMIN ou GESTOR — detalhamento
+
+POST /motoristas — autenticação ADMIN ou GESTOR — criação
+
+PATCH /motoristas/:id — autenticação ADMIN ou GESTOR — atualização
+
+DELETE /motoristas/:id — autenticação ADMIN ou GESTOR — remoção
+
+GET /pedidos — autenticação para qualquer papel
+
+GET /pedidos/:id — autenticação para qualquer papel
+
+POST /pedidos — autenticação para qualquer papel
+
+PATCH /pedidos/:id — autenticação ADMIN ou GESTOR — atualização
+
+PATCH /pedidos/:id/aceitar — autenticação GESTOR — aceitar pedidos
+
+DELETE /pedidos/:id — autenticação ADMIN — remoção
